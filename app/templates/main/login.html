@@ -1,4 +1,4 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+{% comment %} <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <body>
@@ -8,7 +8,7 @@
       <div id="login-row" class="row justify-content-center align-items-center">
         <div id="login-column" class="col-md-6">
           <div id="login-box" class="col-md-12">
-            <form id="login-form" class="form" action="" method="post">
+            <form action="{% url 'register' %}" method="post">
               {% csrf_token %}
               <h3 class="text-center text-info">Login</h3>
               <div class="form-group">
@@ -20,10 +20,10 @@
                 <input type="text" name="password" id="password" class="form-control" placeholder="password here" />
               </div>
               <div class="form-group">
-                <input type="submit" name="submit" onlick="windows.location.href='{% url 'login' %}'" class="btn btn-info btn-md" value="Login" />
-                {% comment %} <a href="{% url 'register' %}" class="text-info">Create Account</a> {% endcomment %}
+                <input type="submit" class="btn btn-info btn-md" value="Login" />
               </div>
               <div id="register-link" class="text-right">
+                {{ form.as_p }}
                 <a href="{% url 'register' %}" class="text-info">Create Account</a>
               </div>
             </form>
@@ -32,4 +32,11 @@
       </div>
     </div>
   </div>
-</body>
+</body> {% endcomment %}
+
+<form method="POST" novalidate>
+  {% csrf_token %}
+  <h2>Login</h2>
+  {{ form.as_p }}
+  <input type="submit" value="Login" />
+</form>
