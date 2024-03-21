@@ -40,15 +40,3 @@ class RetrieveUsersView(generics.RetrieveAPIView):
   permission_classes = [permissions.IsAuthenticated]
 
   queryset = get_user_model().objects.all()
-
-def loginview(request):
-    if request.method == 'POST':
-        user = authenticate(request, username=request.POST["username"],
-                            password=request.POST["password"])
-        if user:
-            login(request, user)
-            messages.success(request, 'Logged in successfully')
-            return redirect('home')
-        else:
-            messages.error(request, 'Logged in Fail')
-    return render(request, 'test_app/home.html')

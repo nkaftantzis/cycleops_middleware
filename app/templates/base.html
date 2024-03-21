@@ -22,11 +22,16 @@
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'deploy' %}">Deploy</a>
             </li>
+            <li class="nav-item">
+              {% if user.is_staff %}
+                <a class="nav-link active" href="{% url '' %}">User Management</a>
+              {% endif %}
+            </li>
           </ul>
           <form class="d-flex" role="search">
             {% csrf_token %}
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            {% comment %} <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-outline-success" type="submit">Search</button> {% endcomment %}
           </form>
         </div>
       </div>

@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return a user with encrypted password."""
-        api_key = uuid.uuid4()
+        # api_key = uuid.uuid4()
         # validated_data['api_key'] = api_key
         return get_user_model().objects.create_user(**validated_data)
 

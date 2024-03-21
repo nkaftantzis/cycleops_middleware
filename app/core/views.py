@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
-# from django.contrib.auth.views import LoginView
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-
-from .forms import LoginForm
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView
+from .forms import LoginForm , SignupForm , ProfileForm
 
 def home(request):
     return render(request , "main/home.html")
@@ -16,9 +16,8 @@ def deploy(request):
     return render(request , "main/deploy.html")
 # def login(request):
 #     return render(request , "main/login.html")
-def register(request):
-    return render(request , "main/register.html")
-
+# def register(request):
+#     return render(request , "main/register.html")
 
 
 def sign_in(request):
@@ -40,18 +39,41 @@ def sign_in(request):
 
         # form is not valid or user is not authenticated
         messages.error(request,f'Invalid username or password')
-        return render(request,'home.html')
+        return render(request,'main/home.html')
 
 def sign_out(request):
     logout(request)
     messages.success(request,f'You have been logged out.')
     return redirect('')
-# class MyLoginView(LoginView):
-#     redirect_authenticated_user = False
 
-#     def get_success_url(self):
-#         return reverse_lazy('profile')
 
-#     def form_invalid(self, form):
-#         messages.error(self.request,'Invalid username or password')
-#         return self.render_to_response(self.get_context_data(form=form))
+def register(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = SignupForm()
+    return render(request, 'main/register.html', {'form': form})
+
+
+def edit_profile(request):
+    user = request.user
+    if user.is_authenticated:
+        return redirect("home")
+    profile = request.user
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+    else:
+        form = ProfileForm()
+    return render(request, 'main/edit_profile.html', {'form': form})
+
+
+def view_profile(request):
+    return render(request, 'profile.html')
